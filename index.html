@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$NAP — NAPCOIN · The First Proof-of-Rest Token</title>
+<meta name="description" content="Wen moon? After my nap. $NAP — 1,000,000,000 supply, fair launch on pump.fun, 100% horizontal. The first proof-of-rest token on Solana.">
+<meta property="og:title" content="$NAP — The First Proof-of-Rest Token">
+<meta property="og:description" content="wen moon? after my nap. fair launch on pump.fun · solana · certified horizontal.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og-snug.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%232B2459"/><ellipse cx="36" cy="58" rx="24" ry="17" fill="%23FFFDFA"/><ellipse cx="60" cy="50" rx="26" ry="20" fill="%23FFFDFA"/><ellipse cx="50" cy="66" rx="36" ry="14" fill="%23FFFDFA"/><path d="M40 54 q4 4 8 0" stroke="%234A3F7A" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M58 54 q4 4 8 0" stroke="%234A3F7A" stroke-width="3" fill="none" stroke-linecap="round"/></svg>'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky1:#12132E; --sky2:#2B2459; --sky3:#5C3A6E; --horizon:rgba(255,158,125,.22);
+  --ink:#F6F1FF; --sub:#B9B3DC; --faint:rgba(244,239,255,.55);
+  --lav:#8C7BFF; --pink:#FFB7D9; --peach:#FFCFA3; --star:#FFE9A8; --moss:#9BE8C8;
+  --card:rgba(255,255,255,.065); --card2:rgba(255,255,255,.10); --line:rgba(255,255,255,.14);
+  --shadow:0 24px 60px rgba(6,7,26,.45);
+  --display:'Fredoka',sans-serif; --body:'Nunito',sans-serif; --mono:'Space Mono',monospace;
+  --r:28px;
+}
+html[data-theme="day"]{
+  --sky1:#A8D4FF; --sky2:#CDE2FF; --sky3:#FFE0C2; --horizon:rgba(255,190,140,.5);
+  --ink:#33295C; --sub:#6A5F96; --faint:rgba(51,41,92,.55);
+  --card:rgba(255,255,255,.55); --card2:rgba(255,255,255,.8); --line:rgba(51,41,92,.14);
+  --shadow:0 24px 50px rgba(90,80,160,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);line-height:1.65;overflow-x:hidden;min-height:100vh;
+  background:linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 46%,var(--sky3) 100%);
+  background-attachment:fixed;transition:background .8s ease,color .5s ease}
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;height:34vh;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent,var(--horizon));transition:background .8s}
+#sky{position:fixed;inset:0;z-index:0;pointer-events:none;transition:opacity .8s}
+html[data-theme="day"] #sky{opacity:.2}
+::selection{background:var(--pink);color:#33295C}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--peach);outline-offset:3px;border-radius:8px}
+
+/* drifting clouds */
+.cloudbg{position:fixed;z-index:0;pointer-events:none;opacity:.16;filter:blur(2px)}
+.cloudbg svg{width:100%}
+.c1{width:300px;top:14%;animation:drift 90s linear infinite}
+.c2{width:200px;top:42%;animation:drift 130s linear infinite;animation-delay:-60s;opacity:.11}
+.c3{width:250px;top:70%;animation:drift 110s linear infinite;animation-delay:-30s;opacity:.13}
+@keyframes drift{from{left:-340px}to{left:110vw}}
+
+/* ============ NAV ============ */
+nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:80;width:min(1020px,calc(100% - 24px));
+  display:flex;align-items:center;gap:6px;padding:10px 12px;border-radius:999px;
+  background:var(--card2);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:var(--shadow)}
+.brand{font-family:var(--display);font-weight:700;font-size:1.05rem;padding:0 10px;display:flex;align-items:center;gap:8px}
+.brand .tick{font-family:var(--mono);font-size:.66rem;background:var(--lav);color:#fff;border-radius:999px;padding:3px 9px}
+.nv{display:none;gap:2px;margin:0 auto}
+@media(min-width:880px){.nv{display:flex}}
+.nv a{font-size:.84rem;font-weight:700;color:var(--sub);padding:8px 13px;border-radius:999px}
+.nv a:hover{color:var(--ink);background:var(--card)}
+nav .sp{flex:1}
+@media(min-width:880px){nav .sp{display:none}}
+.toggle{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);
+  font-size:1.15rem;display:grid;place-items:center;transition:transform .3s}
+.toggle:hover{transform:rotate(20deg) scale(1.08)}
+
+/* ============ BUTTONS ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--display);
+  font-weight:600;font-size:.92rem;padding:15px 30px;border-radius:999px;border:none;
+  transition:transform .25s cubic-bezier(.3,1.5,.5,1),box-shadow .25s;text-align:center}
+.btn:hover{transform:translateY(-3px) scale(1.03)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn-cozy{background:linear-gradient(135deg,var(--peach),var(--pink));color:#4A2C44;
+  box-shadow:0 12px 32px rgba(255,183,217,.35)}
+.btn-soft{background:var(--card2);border:1px solid var(--line);color:var(--ink);backdrop-filter:blur(10px)}
+.btn-lav{background:var(--lav);color:#fff;box-shadow:0 12px 32px rgba(140,123,255,.4)}
+.btn-sm{padding:10px 20px;font-size:.78rem}
+
+/* ============ LAYOUT ============ */
+.wrap{position:relative;z-index:1;max-width:1020px;margin:0 auto;padding:0 20px}
+section{padding:84px 0}
+.eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;text-transform:lowercase;color:var(--peach);margin-bottom:12px}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,4.4vw,2.5rem);line-height:1.15;margin-bottom:14px}
+.lead{color:var(--sub);max-width:600px;font-size:1.02rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow);
+  padding:clamp(24px,4.5vw,44px)}
+
+/* ============ HERO ============ */
+.hero{padding:150px 0 60px;text-align:center;position:relative;z-index:1}
+.moon{position:absolute;top:96px;right:6%;width:clamp(54px,8vw,86px);height:clamp(54px,8vw,86px);border-radius:50%;
+  background:radial-gradient(circle at 34% 32%,#FFF8E0,var(--star) 58%,#E8C97E);
+  box-shadow:0 0 70px rgba(255,233,168,.55);z-index:0;transition:all .8s}
+html[data-theme="day"] .moon{background:radial-gradient(circle at 34% 32%,#FFFCEF,#FFE17D 58%,#FFB347);box-shadow:0 0 90px rgba(255,200,90,.7)}
+.snug{width:clamp(190px,34vw,290px);margin:0 auto;display:block;cursor:pointer;position:relative;z-index:2;
+  filter:drop-shadow(0 26px 44px rgba(6,7,26,.4));animation:breathe 5.2s ease-in-out infinite;transform-origin:center}
+@keyframes breathe{50%{transform:scale(1.035) translateY(-7px)}}
+.snug.boing{animation:squish .6s cubic-bezier(.3,1.7,.5,1)}
+@keyframes squish{30%{transform:scale(1.12,.86)}60%{transform:scale(.92,1.1) translateY(-12px)}100%{transform:scale(1)}}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.9rem,6.4vw,4rem);line-height:1.08;margin:26px 0 8px;letter-spacing:-.01em}
+h1 .rest{display:inline-block;background:linear-gradient(135deg,var(--lav),var(--pink));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-sub{color:var(--sub);max-width:560px;margin:10px auto 0;font-size:1.04rem}
+.hero-sub b{color:var(--ink)}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.pill{font-family:var(--mono);font-size:.68rem;background:var(--card);border:1px solid var(--line);
+  border-radius:999px;padding:9px 16px;backdrop-filter:blur(8px)}
+.pill b{color:var(--peach)}
+.boop-hint{font-family:var(--mono);font-size:.64rem;color:var(--faint);margin-top:14px}
+
+/* ============ MARQUEE ============ */
+.marquee{position:relative;z-index:1;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  overflow:hidden;padding:14px 0;background:var(--card)}
+.track{display:flex;gap:54px;white-space:nowrap;width:max-content;font-family:var(--display);
+  font-weight:500;font-size:.9rem;color:var(--sub);animation:scroll 60s linear infinite}
+.track span::before{content:"☁️ ";opacity:.7}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ============ CARDS ============ */
+.cards{display:grid;gap:18px;margin-top:34px}
+@media(min-width:760px){.cards{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px;
+  backdrop-filter:blur(14px);transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.card:hover{transform:translateY(-7px) rotate(-.6deg)}
+.card:nth-child(2):hover{transform:translateY(-7px) rotate(.6deg)}
+.card .ico{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;font-size:1.7rem;margin-bottom:16px;
+  background:linear-gradient(135deg,var(--lav),var(--pink));box-shadow:0 10px 24px rgba(140,123,255,.3)}
+.card:nth-child(2) .ico{background:linear-gradient(135deg,var(--pink),var(--peach))}
+.card:nth-child(3) .ico{background:linear-gradient(135deg,var(--peach),var(--moss))}
+.card h3{font-family:var(--display);font-weight:600;font-size:1.02rem;margin-bottom:8px}
+.card p{color:var(--sub);font-size:.92rem}
+
+/* ============ LORE ============ */
+.lore-grid{display:grid;gap:34px;align-items:center}
+@media(min-width:840px){.lore-grid{grid-template-columns:1fr 1.3fr}}
+.lore-art{display:grid;place-items:center;padding:30px;border-radius:24px;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 50% 110%,var(--horizon),transparent 70%),var(--card);border:1px solid var(--line)}
+.lore-art svg{width:min(220px,70%);animation:breathe 6s ease-in-out infinite}
+.lore-text p{color:var(--sub);margin-bottom:14px;font-size:.98rem}
+.lore-text b{color:var(--ink)}
+.lore-quote{display:inline-block;font-family:var(--display);font-weight:500;font-size:.95rem;
+  background:var(--card2);border:1px solid var(--line);border-radius:18px;padding:14px 20px;margin-top:6px}
+.lore-quote i{color:var(--peach);font-style:normal}
+
+/* ============ TOKENOMICS ============ */
+.cycle{margin-top:30px}
+.cycle-bar{display:flex;height:62px;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+.seg{width:0;transition:width 1.3s cubic-bezier(.25,.8,.25,1);display:grid;place-items:center;
+  font-family:var(--mono);font-size:.72rem;font-weight:700;color:#2E2450;white-space:nowrap;overflow:hidden}
+.s1{background:#8C7BFF;color:#fff}.s2{background:#FFB7D9}.s3{background:#FF9E8E}.s4{background:#FFCFA3}.s5{background:#9BE8C8}
+.legend{display:grid;gap:10px;margin-top:22px}
+@media(min-width:760px){.legend{grid-template-columns:1fr 1fr}}
+.leg{display:flex;gap:13px;align-items:flex-start;background:var(--card);border:1px solid var(--line);
+  border-radius:18px;padding:14px 18px}
+.leg .dot{width:15px;height:15px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.leg b{font-size:.92rem}
+.leg small{display:block;color:var(--sub);font-size:.8rem;line-height:1.5}
+.burnbox{margin-top:22px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--card);
+  border:1px solid var(--line);border-radius:20px;padding:18px 22px}
+.burnbox .flame{font-size:1.9rem}
+.burnbox p{flex:1;min-width:220px;color:var(--sub);font-size:.88rem}
+.burnbox b{color:var(--ink)}
+.burnbox .stat{font-family:var(--mono);font-size:.8rem;background:var(--card2);border:1px solid var(--line);
+  border-radius:14px;padding:10px 16px}
+.burnbox .stat b{color:#FF9E8E}
+
+/* ============ ROADMAP ============ */
+.stages{display:grid;gap:16px;margin-top:32px}
+@media(min-width:760px){.stages{grid-template-columns:repeat(2,1fr)}}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:24px;backdrop-filter:blur(12px)}
+.stage .ph{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.stage .ph .mn{font-size:1.5rem}
+.stage .ph span{font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;text-transform:lowercase;color:var(--peach)}
+.stage h3{font-family:var(--display);font-weight:600;font-size:1.05rem;margin-bottom:10px}
+.stage ul{list-style:none;color:var(--sub);font-size:.88rem}
+.stage li{padding:3px 0 3px 22px;position:relative}
+.stage li::before{content:"☾";position:absolute;left:0;color:var(--lav)}
+
+/* ============ NAP TIMER ============ */
+.timer-grid{display:grid;gap:26px;align-items:center;margin-top:10px}
+@media(min-width:840px){.timer-grid{grid-template-columns:1fr 1fr}}
+.tdisplay{font-family:var(--mono);font-weight:700;font-size:clamp(3.4rem,11vw,5.6rem);text-align:center;
+  letter-spacing:.04em;line-height:1;text-shadow:0 0 44px rgba(140,123,255,.45)}
+.tlabel{text-align:center;font-family:var(--mono);font-size:.68rem;color:var(--faint);margin-top:10px;letter-spacing:.2em}
+.tbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:22px}
+.chip{font-family:var(--display);font-weight:600;font-size:.82rem;background:var(--card2);border:1px solid var(--line);
+  border-radius:999px;padding:10px 18px;transition:all .2s}
+.chip:hover{border-color:var(--lav);transform:translateY(-2px)}
+.chip.on{background:var(--lav);color:#fff;border-color:var(--lav)}
+.timer-copy p{color:var(--sub);margin-bottom:12px;font-size:.95rem}
+.timer-copy b{color:var(--ink)}
+
+/* ============ SHEEP GAME ============ */
+.meadow{position:relative;margin-top:28px;height:210px;border-radius:24px;overflow:hidden;border:1px solid var(--line);
+  background:linear-gradient(180deg,transparent 55%,rgba(155,232,200,.16) 56%),var(--card)}
+.fence{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:2.6rem;user-select:none}
+.ground{position:absolute;left:0;right:0;bottom:18px;border-bottom:3px dashed var(--line)}
+.sheep{position:absolute;bottom:30px;font-size:2.1rem;left:-60px;user-select:none;will-change:transform}
+.sheep-ui{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.scount{font-family:var(--mono);font-size:.85rem;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:11px 18px}
+.scount b{color:var(--moss);font-size:1rem}
+
+/* ============ CONTRACT ============ */
+.dnd{text-align:center}
+.hanger{display:inline-block;background:var(--card2);border:1px solid var(--line);border-radius:24px;
+  padding:10px 26px;font-family:var(--display);font-weight:600;font-size:.9rem;margin-bottom:18px;position:relative}
+.hanger::before{content:"";position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:26px;height:26px;
+  border:3px solid var(--line);border-radius:50%;border-bottom-color:transparent}
+.ca-row{display:flex;gap:10px;justify-content:center;align-items:stretch;flex-wrap:wrap;margin-top:8px}
+.ca{font-family:var(--mono);font-size:.74rem;background:rgba(10,10,32,.55);color:var(--moss);
+  border:1px solid var(--line);border-radius:16px;padding:14px 18px;word-break:break-all;display:flex;align-items:center;max-width:100%}
+html[data-theme="day"] .ca{background:#33295C;color:#9BE8C8}
+.trust{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.badge{font-family:var(--mono);font-size:.64rem;border:1px solid var(--line);background:var(--card);
+  border-radius:999px;padding:7px 14px;color:var(--sub)}
+.badge b{color:var(--moss)}
+.warn{display:inline-block;font-family:var(--mono);font-size:.68rem;margin-top:18px;background:var(--card2);
+  border:1px solid var(--line);border-radius:14px;padding:9px 16px;color:var(--peach)}
+
+/* ============ FAQ ============ */
+.faq-list{display:grid;gap:12px;margin-top:28px;max-width:760px}
+details{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:0 22px;backdrop-filter:blur(10px)}
+summary{cursor:pointer;font-weight:800;padding:17px 0;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:.95rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"☾";color:var(--lav);transition:transform .3s}
+details[open] summary::after{transform:rotate(180deg)}
+details p{color:var(--sub);font-size:.9rem;padding-bottom:18px}
+
+/* ============ FOOTER ============ */
+footer{position:relative;z-index:1;padding:70px 0 50px;text-align:center}
+.socials{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0}
+.fine{font-family:var(--mono);font-size:.62rem;color:var(--faint);max-width:640px;margin:16px auto 0;line-height:1.8}
+
+/* ============ FX ============ */
+.zzz{position:fixed;z-index:120;pointer-events:none;font-family:var(--display);font-weight:700;color:var(--lav);
+  text-shadow:0 0 14px rgba(140,123,255,.6);will-change:transform,opacity}
+.shoot{position:fixed;z-index:2;width:130px;height:2.5px;border-radius:3px;pointer-events:none;
+  background:linear-gradient(90deg,var(--star),transparent);box-shadow:0 0 12px var(--star);will-change:transform,opacity}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(16px);z-index:130;
+  background:var(--card2);color:var(--ink);border:1px solid var(--line);backdrop-filter:blur(16px);
+  font-family:var(--display);font-weight:500;font-size:.84rem;padding:13px 22px;border-radius:999px;
+  opacity:0;transition:all .35s;pointer-events:none;box-shadow:var(--shadow);max-width:88vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#wishBtn{position:fixed;left:18px;bottom:18px;z-index:75;font-size:1.25rem;width:52px;height:52px;border-radius:50%;
+  background:var(--card2);border:1px solid var(--line);backdrop-filter:blur(14px);box-shadow:var(--shadow);transition:transform .3s}
+#wishBtn:hover{transform:scale(1.12) rotate(-12deg)}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+  .seg{width:var(--w)!important}
+}
+</style>
+<!-- Google Analytics 4 — replace G-XXXXXXXXXX with your Measurement ID (analytics.google.com → Admin → Data Streams) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX', { 'anonymize_ip': true });
+</script>
+</head>
+<body>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="cloudbg c1" aria-hidden="true"><svg viewBox="0 0 200 100"><ellipse cx="60" cy="65" rx="55" ry="30" fill="#fff"/><ellipse cx="115" cy="50" rx="50" ry="34" fill="#fff"/><ellipse cx="155" cy="68" rx="42" ry="26" fill="#fff"/></svg></div>
+<div class="cloudbg c2" aria-hidden="true"><svg viewBox="0 0 200 100"><ellipse cx="60" cy="65" rx="55" ry="30" fill="#fff"/><ellipse cx="115" cy="50" rx="50" ry="34" fill="#fff"/><ellipse cx="155" cy="68" rx="42" ry="26" fill="#fff"/></svg></div>
+<div class="cloudbg c3" aria-hidden="true"><svg viewBox="0 0 200 100"><ellipse cx="60" cy="65" rx="55" ry="30" fill="#fff"/><ellipse cx="115" cy="50" rx="50" ry="34" fill="#fff"/><ellipse cx="155" cy="68" rx="42" ry="26" fill="#fff"/></svg></div>
+
+<nav>
+  <span class="brand">☁️ NAPCOIN <span class="tick">$NAP</span></span>
+  <div class="nv">
+    <a href="#about">about</a><a href="#tokenomics">sleep cycle</a><a href="#roadmap">stages</a>
+    <a href="#timer">nap timer</a><a href="#sheep">sheep</a><a href="#contract">contract</a>
+  </div>
+  <span class="sp"></span>
+  <button class="toggle" id="themeBtn" aria-label="Toggle day and night mode" title="day / night">🌙</button>
+  <a class="btn btn-cozy btn-sm" href="#contract">GET COZY</a>
+</nav>
+
+<header class="hero wrap" id="top">
+  <div class="moon" aria-hidden="true"></div>
+  <svg class="snug" id="snug" viewBox="0 0 260 180" role="img" aria-label="Snug the nap cloud — click to boop">
+    <!-- nightcap -->
+    <path d="M150 28 Q200 2 226 30 Q238 44 226 52 L160 56 Z" fill="#8C7BFF" stroke="#6E5BE8" stroke-width="3"/>
+    <path d="M150 28 Q160 50 160 56 L142 58 Q140 38 150 28Z" fill="#7A68F2"/>
+    <circle cx="231" cy="33" r="9" fill="#FFE9A8"/>
+    <path d="M152 52 Q190 44 224 50" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".85"/>
+    <!-- cloud body -->
+    <ellipse cx="80" cy="118" rx="58" ry="42" fill="#FFFDFA"/>
+    <ellipse cx="150" cy="100" rx="64" ry="50" fill="#FFFDFA"/>
+    <ellipse cx="205" cy="124" rx="46" ry="34" fill="#FFFDFA"/>
+    <ellipse cx="135" cy="138" rx="92" ry="34" fill="#FFFDFA"/>
+    <ellipse cx="120" cy="146" rx="96" ry="26" fill="#F3EBFF"/>
+    <!-- face -->
+    <path d="M104 102 Q113 110 122 102" stroke="#4A3F7A" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M152 102 Q161 110 170 102" stroke="#4A3F7A" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="98" cy="118" rx="9" ry="5.5" fill="#FFB7D9" opacity=".8"/>
+    <ellipse cx="176" cy="118" rx="9" ry="5.5" fill="#FFB7D9" opacity=".8"/>
+    <path d="M128 122 Q137 129 146 122" stroke="#4A3F7A" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+    <!-- moon pillow -->
+    <path d="M52 132 a26 26 0 1 0 30 38 a20 20 0 1 1 -30 -38" fill="#FFE9A8" stroke="#EFCF7E" stroke-width="3"/>
+  </svg>
+  <p class="boop-hint">( boop the cloud · <span id="boops">0</span> boops so far )</p>
+  <h1>THE FIRST<br><span class="rest">PROOF-OF-REST</span> TOKEN</h1>
+  <p class="hero-sub"><b>1,000,000,000 tokens. zero urgency.</b> one $NAP for every sheep the world counts tonight. $NAP is for everyone the grind forgot to thank. spiritually softer than bitcoin.</p>
+  <div class="hero-ctas">
+    <a class="btn btn-cozy" href="#contract">GET COZY → BUY $NAP</a>
+    <a class="btn btn-soft" href="#community">JOIN THE WELL-RESTED</a>
+  </div>
+  <div class="pills">
+    <span class="pill">SUPPLY <b data-count="1000000000">0</b></span>
+    <span class="pill">CHAIN <b>SOLANA</b></span>
+    <span class="pill">LAUNCH <b>PUMP.FUN · FAIR</b></span>
+    <span class="pill">PRESALE <b>NONE. WE SLEPT IN</b></span>
+    <span class="pill">SUPPLY ONLY <b>SHRINKS 🔥</b></span>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="track">
+  <span>you've done enough today</span><span>rest is productive</span><span>wen moon? after my nap</span>
+  <span>the chart sleeps too</span><span>soft is the new alpha</span><span>naps are mandatory, gains are optional</span>
+  <span>log off. it's compounding.</span><span>certified horizontal</span><span>drink some water</span>
+  <span>wake me up at graduation</span><span>fair launch, fair bedtime</span>
+  <span>you've done enough today</span><span>rest is productive</span><span>wen moon? after my nap</span>
+  <span>the chart sleeps too</span><span>soft is the new alpha</span><span>naps are mandatory, gains are optional</span>
+  <span>log off. it's compounding.</span><span>certified horizontal</span><span>drink some water</span>
+  <span>wake me up at graduation</span><span>fair launch, fair bedtime</span>
+</div></div>
+
+<main>
+  <section class="wrap reveal" id="about">
+    <div class="eyebrow">// what is $nap</div>
+    <h2>A coin that tells you to log off.</h2>
+    <p class="lead">Proof of Work made machines tired. Proof of Stake made money tired. Proof of Rest makes nobody tired. 1 billion supply, fair launch, 100% horizontal.</p>
+    <div class="cards">
+      <div class="card"><span class="ico">🛏️</span><h3>WHY IT EXISTS</h3><p>Hustle culture turned rest into guilt. We turned it back into status. Holding $NAP means: i've done enough today.</p></div>
+      <div class="card"><span class="ico">🐑</span><h3>WHY 1,000,000,000</h3><p>That's roughly how many sheep the world counts every night. One $NAP per sheep — and Bedtime Burns mean the flock only ever gets smaller. Scarcity is cozy, eventually.</p></div>
+      <div class="card"><span class="ico">🌙</span><h3>THE TRIBE</h3><p>The Well-Rested don't raid at 3am — we're asleep at 3am. No alpha calls, no 🚨, no urgency. One scheduled hour of silence per day.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap reveal" id="lore">
+    <div class="eyebrow">// the lore</div>
+    <h2>Meet Snug.</h2>
+    <div class="lore-grid">
+      <div class="lore-art">
+        <svg viewBox="0 0 260 180" role="img" aria-label="Snug hugging his moon pillow">
+          <path d="M150 28 Q200 2 226 30 Q238 44 226 52 L160 56 Z" fill="#8C7BFF" stroke="#6E5BE8" stroke-width="3"/>
+          <circle cx="231" cy="33" r="9" fill="#FFE9A8"/>
+          <ellipse cx="80" cy="118" rx="58" ry="42" fill="#FFFDFA"/>
+          <ellipse cx="150" cy="100" rx="64" ry="50" fill="#FFFDFA"/>
+          <ellipse cx="205" cy="124" rx="46" ry="34" fill="#FFFDFA"/>
+          <ellipse cx="135" cy="138" rx="92" ry="34" fill="#FFFDFA"/>
+          <path d="M104 102 Q113 110 122 102" stroke="#4A3F7A" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <path d="M152 102 Q161 110 170 102" stroke="#4A3F7A" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="98" cy="118" rx="9" ry="5.5" fill="#FFB7D9" opacity=".8"/>
+          <ellipse cx="176" cy="118" rx="9" ry="5.5" fill="#FFB7D9" opacity=".8"/>
+          <path d="M128 122 Q137 129 146 122" stroke="#4A3F7A" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <path d="M52 132 a26 26 0 1 0 30 38 a20 20 0 1 1 -30 -38" fill="#FFE9A8" stroke="#EFCF7E" stroke-width="3"/>
+          <text x="216" y="84" font-family="Fredoka,sans-serif" font-size="20" fill="#8C7BFF">z</text>
+          <text x="230" y="68" font-family="Fredoka,sans-serif" font-size="26" fill="#8C7BFF">z</text>
+        </svg>
+      </div>
+      <div class="lore-text">
+        <p>Snug is the cloud that catches <b>every "just 5 more minutes" ever spoken.</b> For decades he drifted above the grind — absorbing snoozed alarms, skipped lunches and missed sunsets — growing softer and heavier with the world's unclaimed rest.</p>
+        <p>In 2026 he got so heavy he drifted down onto a blockchain and decided to give it all back: <b>1,000,000,000 pieces of rest</b> — one for every sheep ever counted — for anyone willing to slow down.</p>
+        <p>The Well-Rested are his nap army. They do not march. <b>They recline.</b></p>
+        <p class="lore-quote">"wen moon? <i>after my nap.</i>" — Snug, half asleep</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap reveal" id="tokenomics">
+    <div class="panel">
+      <div class="eyebrow">// tokenomics</div>
+      <h2>The Sleep Cycle.</h2>
+      <p class="lead">1,000,000,000 $NAP, born on a public fair-launch curve. No presale, no team bag, no airdrop wallet, no mint authority. Snug buys at the same price as you.</p>
+      <div class="cycle">
+        <div class="cycle-bar" role="img" aria-label="Allocation: open bonding curve about 80%, graduation liquidity about 20% (burned)">
+          <div class="seg s1" style="--w:80%">≈80%</div>
+          <div class="seg s2" style="--w:20%">≈20%</div>
+        </div>
+        <div class="legend">
+          <div class="leg"><span class="dot" style="background:#8C7BFF"></span><span><b>💤 The Open Curve — ≈80%</b><small>every single token is sold on the public pump.fun bonding curve. no allocations, no insiders, no alarm clocks. first come, best rested.</small></span></div>
+          <div class="leg"><span class="dot" style="background:#FFB7D9"></span><span><b>🌙 Graduation Liquidity — ≈20%</b><small>when $NAP graduates, this gets tucked into the DEX pool and the LP is burned. it can never be pulled, because it's asleep forever.</small></span></div>
+          <div class="leg" style="grid-column:1/-1"><span class="dot" style="background:#FF9E8E"></span><span><b>🔥 Bedtime Burns — funded by creator fees</b><small>100% of creator fees buy $NAP back from the market and send it to sleep at the incinerator. the dev takes naps, not profits.</small></span></div>
+        </div>
+        <div class="burnbox">
+          <span class="flame">🔥</span>
+          <p><b>Bedtime Burns:</b> the only thing we do fast. Every creator fee earned becomes a buyback, tucked in forever at <span style="font-family:var(--mono);font-size:.78rem">1nc1nerator11…1111</span>. Your share of the cloud grows while you sleep.</p>
+          <span class="stat">burned so far: <b data-count="0">0</b> $NAP</span>
+          <span class="stat">next burn: <b>500 holders</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap reveal" id="roadmap">
+    <div class="eyebrow">// roadmap</div>
+    <h2>Four sleep stages. No deadlines.</h2>
+    <p class="lead">Deadlines are stress. Milestones are holders, burns and culture moments — things a community can actually deliver, whenever it's well-rested enough to deliver them.</p>
+    <div class="stages">
+      <div class="stage"><div class="ph"><span class="mn">🌒</span><span>stage 1 · falling asleep</span></div><h3>Launch</h3>
+        <ul><li>Fair launch on pump.fun — everyone starts at the same bedtime</li><li>Graduation to PumpSwap, LP burned forever</li><li>Site + sticker pack live</li><li>First 100 holders: "First to Bed" role</li></ul></div>
+      <div class="stage"><div class="ph"><span class="mn">🌓</span><span>stage 2 · light sleep</span></div><h3>Community</h3>
+        <ul><li>500 holders → first Bedtime Burn, live</li><li>CoinGecko & CMC applications</li><li>daily "gm (going back to bed)" ritual</li><li>nap-streak leaderboard</li></ul></div>
+      <div class="stage"><div class="ph"><span class="mn">🌔</span><span>stage 3 · REM</span></div><h3>The dreams go viral</h3>
+        <ul><li>TikTok/Reels cozy-content wave</li><li>ASMR collab + World Nap Day event</li><li>2,000 holders, multiple burns deep</li><li>DEXScreener trending</li></ul></div>
+      <div class="stage"><div class="ph"><span class="mn">🌕</span><span>stage 4 · lucid dream</span></div><h3>Community steers</h3>
+        <ul><li>Snug plushie run (if the vote says so)</li><li>nap-timer mini-app</li><li>CEX application</li><li>whatever feels right. no rush.</li></ul></div>
+    </div>
+  </section>
+
+  <section class="wrap reveal" id="timer">
+    <div class="panel">
+      <div class="timer-grid">
+        <div>
+          <div class="tdisplay" id="tdisp">20:00</div>
+          <div class="tlabel" id="tlab">PICK A NAP · PRESS START</div>
+          <div class="tbtns">
+            <button class="chip" data-mins="10">10 min</button>
+            <button class="chip on" data-mins="20">20 min</button>
+            <button class="chip" data-mins="26">26 min · NASA nap</button>
+            <button class="chip" data-mins="0.1">6 sec · demo</button>
+          </div>
+          <div class="tbtns">
+            <button class="btn btn-lav btn-sm" id="tstart">START NAP</button>
+            <button class="btn btn-soft btn-sm" id="treset">RESET</button>
+          </div>
+        </div>
+        <div class="timer-copy">
+          <div class="eyebrow">// utility (finally)</div>
+          <h2 style="font-size:clamp(1.3rem,3vw,1.8rem)">The Nap Timer.</h2>
+          <p>Every project promises utility. Ours actually works: <b>pick a nap, press start, close your eyes.</b> The 26-minute option is the NASA-studied power-nap length. This is the entire product. It is also free.</p>
+          <p>The chart will still be here when you wake up. <b>That's a feature.</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap reveal" id="sheep">
+    <div class="eyebrow">// the sheep game</div>
+    <h2>Count sheep with the rest of us.</h2>
+    <p class="lead">One button. One sheep. One global count. The Well-Rested have a collective bedtime ritual and this is it.</p>
+    <div class="meadow" id="meadow">
+      <div class="ground"></div>
+      <div class="fence" aria-hidden="true">🪵</div>
+    </div>
+    <div class="sheep-ui">
+      <button class="btn btn-cozy" id="sheepBtn">COUNT A SHEEP 🐑</button>
+      <span class="scount">sheep counted: <b id="sheepCount">0</b></span>
+    </div>
+  </section>
+
+  <section class="wrap reveal" id="contract">
+    <div class="panel dnd">
+      <span class="hanger">🚪 DO NOT DISTURB — VERIFYING CONTRACT</span>
+      <h2>One contract. Tucked in tight.</h2>
+      <p class="lead" style="margin:0 auto">The one and only $NAP contract. If it arrived in a DM, it's a nightmare — close it.</p>
+      <div class="ca-row">
+        <span class="ca" id="caText">PASTE_REAL_CA_AFTER_DEPLOY…zZz…pump</span>
+        <button class="btn btn-soft btn-sm" id="copyBtn" type="button">COPY</button>
+        <a class="btn btn-cozy btn-sm" href="#" rel="noopener">BUY ON PUMP.FUN</a>
+      </div>
+      <p style="margin:10px 0 0;font-size:.82rem;color:var(--sub)">🛡️ <b>aftermynap.fun</b> is the only official site. only trust the contract address shown here — anything else is a sleepwalking impostor.</p>
+      <div class="trust">
+        <span class="badge"><b>✓</b> FAIR LAUNCH</span><span class="badge"><b>✓</b> NO PRESALE</span>
+        <span class="badge"><b>✓</b> NO MINT AUTHORITY</span><span class="badge"><b>✓</b> LP BURNED AT GRADUATION</span>
+        <span class="badge"><b>✓</b> FIXED 1,000,000,000</span><span class="badge"><b>✓</b> LIVE ON SOLSCAN</span>
+      </div>
+      <span class="warn">⚠ admins will never DM you first. now go drink some water.</span>
+    </div>
+  </section>
+
+  <section class="wrap reveal" id="faq">
+    <div class="eyebrow">// sleepy questions</div>
+    <h2>FAQ</h2>
+    <div class="faq-list">
+      <details><summary>Wen moon?</summary><p>after my nap.</p></details>
+      <details><summary>Wen lambo?</summary><p>lambos are loud. wen hammock.</p></details>
+      <details><summary>What's the utility?</summary><p>rest. the rarest asset of 2026. also a working nap timer, which is more utility than most whitepapers.</p></details>
+      <details><summary>Why 1,000,000,000 tokens?</summary><p>one for every sheep the world counts tonight. and Bedtime Burns mean the flock only ever gets smaller — scarcity is cozy, eventually.</p></details>
+      <details><summary>Is it safe?</summary><p>fair launch on pump.fun: fixed supply, no mint authority, no presale, no team allocation, LP burned at graduation — every proof visible on solscan. still a meme token: never spend money you can't afford to lose. now go to bed.</p></details>
+      <details><summary>How do I buy?</summary><p>wallet (Phantom) → some SOL → pump.fun → paste the contract address from this site only → buy → nap.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap" id="community">
+  <h2 style="font-size:clamp(1.3rem,4vw,2rem)">you've done enough today. 🌙</h2>
+  <p class="lead" style="margin:6px auto 0">join the Well-Rested. naps are mandatory, gains are optional.</p>
+  <div class="socials">
+    <a class="btn btn-soft btn-sm" href="#" rel="noopener">𝕏 TWITTER</a>
+    <a class="btn btn-lav btn-sm" href="#" rel="noopener">✈ TELEGRAM</a>
+    <a class="btn btn-soft btn-sm" href="#" rel="noopener">📊 DEXSCREENER</a>
+    <a class="btn btn-soft btn-sm" href="#" rel="noopener">🔍 SOLSCAN</a>
+  </div>
+  <p class="fine">$NAP is a meme token created for entertainment and community participation. it has no intrinsic value and promises no financial return. nothing on this page is financial advice. do your own research, never spend money you can't afford to lose, drink water, and go to bed. © 2026 the Well-Rested — aftermynap.fun — certified horizontal.</p>
+</footer>
+
+<button id="wishBtn" aria-label="Make a wish on a shooting star" title="make a wish">🌠</button>
+<div id="toast" role="status"></div>
+
+<script>
+(function(){
+"use strict";
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* ---------- toast ---------- */
+const toast = $('#toast'); let toastT;
+function say(m){ toast.textContent = m; toast.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(()=>toast.classList.remove('show'), 2600); }
+
+/* ---------- star canvas ---------- */
+const cv = $('#sky'), ctx = cv.getContext('2d');
+let stars = [];
+function size(){ cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio;
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  stars = []; const n = Math.min(160, Math.floor(innerWidth/9));
+  for(let i=0;i<n;i++) stars.push({x:Math.random()*innerWidth, y:Math.random()*innerHeight*.85,
+    r:.6+Math.random()*1.6, p:Math.random()*6.28, sp:.4+Math.random()*1.2});
+}
+size(); addEventListener('resize', size);
+if(!reduce){
+  (function twinkle(t){
+    if(!document.hidden){
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+      for(const s of stars){
+        const a = .25 + .55 * Math.abs(Math.sin(s.p + t/1000*s.sp));
+        ctx.globalAlpha = a; ctx.fillStyle = '#FFF3D6';
+        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.28); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    requestAnimationFrame(twinkle);
+  })(0);
+} else {
+  ctx.fillStyle = '#FFF3D6'; ctx.globalAlpha = .5;
+  stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,6.28); ctx.fill(); });
+}
+
+/* ---------- shooting stars + wishes ---------- */
+const WISHES = ["wish received. snug will sleep on it.","granted (after a short rest).","the universe says: take a break first.",
+  "wish logged. estimated delivery: after everyone's nap.","a star heard you. it's going back to bed now.","soft wish detected. very on brand."];
+let wishI = 0;
+function shootingStar(withWish){
+  const s = document.createElement('span'); s.className = 'shoot';
+  const x0 = innerWidth * (0.15 + Math.random()*0.7), y0 = innerHeight * (0.05 + Math.random()*0.3);
+  s.style.left = x0+'px'; s.style.top = y0+'px'; s.style.transform = 'rotate(20deg)';
+  document.body.appendChild(s);
+  let k = 0;
+  (function fly(){
+    k += 0.025;
+    s.style.transform = `translate(${ -k*340 }px, ${ k*140 }px) rotate(160deg)`;
+    s.style.opacity = String(1 - k);
+    if(k < 1) requestAnimationFrame(fly); else s.remove();
+  })();
+  if(withWish) say('🌠 ' + WISHES[wishI++ % WISHES.length]);
+}
+$('#wishBtn').addEventListener('click', ()=> shootingStar(true));
+if(!reduce) setInterval(()=>{ if(Math.random() > .55) shootingStar(false); }, 9000);
+
+/* ---------- theme toggle ---------- */
+const themeBtn = $('#themeBtn'), root = document.documentElement;
+themeBtn.addEventListener('click', ()=>{
+  const day = root.dataset.theme === 'night';
+  root.dataset.theme = day ? 'day' : 'night';
+  themeBtn.textContent = day ? '☀️' : '🌙';
+  say(day ? 'good morning. you slept great.' : 'lights out. sleep well.');
+});
+
+/* ---------- zzz particles ---------- */
+function zzz(x, y, n){
+  if(reduce) return;
+  for(let i=0;i<n;i++){
+    const z = document.createElement('span'); z.className = 'zzz';
+    z.textContent = 'z'; z.style.fontSize = (14 + Math.random()*20) + 'px';
+    z.style.left = x+'px'; z.style.top = y+'px';
+    document.body.appendChild(z);
+    const dx = (Math.random()-.3)*60, rise = 80 + Math.random()*90, dur = 1400 + Math.random()*800, t0 = performance.now();
+    (function float(t){
+      const k = (t - t0)/dur;
+      if(k >= 1){ z.remove(); return; }
+      z.style.transform = `translate(${dx*k + Math.sin(k*9)*8}px, ${-rise*k}px) rotate(${Math.sin(k*6)*14}deg)`;
+      z.style.opacity = String(1 - k);
+      requestAnimationFrame(float);
+    })(t0);
+  }
+}
+
+/* ---------- boop snug ---------- */
+let boops = 0; const boopEl = $('#boops'), snug = $('#snug');
+const BOOPLINES = ["mmh. five more minutes.","snug appreciated that. probably.","*soft snoring intensifies*",
+  "he dreamt of you just now.","certified horizontal.","that recharged him 0.4%","zzz (that means thanks)"];
+snug.addEventListener('click', e => {
+  boops++; boopEl.textContent = boops;
+  snug.classList.remove('boing'); void snug.getBoundingClientRect(); snug.classList.add('boing');
+  zzz(e.clientX, e.clientY, 4);
+  say(boops % 20 === 0 ? `${boops} boops. snug is now TOO relaxed.` : BOOPLINES[boops % BOOPLINES.length]);
+});
+
+/* ---------- nap timer ---------- */
+let napSecs = 20*60, left = napSecs, tick = null;
+const disp = $('#tdisp'), lab = $('#tlab'), startBtn = $('#tstart');
+function fmt(s){ return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(Math.floor(s%60)).padStart(2,'0'); }
+function render(){ disp.textContent = fmt(left); }
+$$('.chip[data-mins]').forEach(c => c.addEventListener('click', ()=>{
+  $$('.chip[data-mins]').forEach(x => x.classList.remove('on')); c.classList.add('on');
+  napSecs = Math.round(parseFloat(c.dataset.mins) * 60); stop(); left = napSecs; render();
+  lab.textContent = 'NAP LOADED · PRESS START';
+}));
+function stop(){ if(tick){ clearInterval(tick); tick = null; } startBtn.textContent = 'START NAP'; }
+startBtn.addEventListener('click', ()=>{
+  if(tick){ stop(); lab.textContent = 'NAP PAUSED · NO JUDGEMENT'; return; }
+  startBtn.textContent = 'PAUSE';
+  lab.textContent = 'NAPPING… DO NOT DISTURB';
+  say('nap started. the chart can wait. 🌙');
+  tick = setInterval(()=>{
+    left--;
+    if(left <= 0){ left = 0; render(); stop(); left = napSecs;
+      lab.textContent = 'NAP COMPLETE · WELL DONE';
+      say('☀️ nap complete. you are officially well-rested.');
+      zzz(innerWidth/2, innerHeight/2, 8);
+      setTimeout(render, 1200);
+      return;
+    }
+    render();
+  }, 1000);
+});
+$('#treset').addEventListener('click', ()=>{ stop(); left = napSecs; render(); lab.textContent = 'PICK A NAP · PRESS START'; });
+render();
+
+/* ---------- sheep game ---------- */
+let sheep = 0; const sheepCountEl = $('#sheepCount'), meadow = $('#meadow');
+const MILES = {10:"10 sheep. still awake? impressive.",25:"25 sheep. your eyelids are getting heavy…",
+  50:"50 sheep. the flock respects you.",100:"100 SHEEP. you are now an honorary shepherd. 🐑👑"};
+$('#sheepBtn').addEventListener('click', ()=>{
+  sheep++; sheepCountEl.textContent = sheep;
+  if(MILES[sheep]) say(MILES[sheep]);
+  const sp = document.createElement('span'); sp.className = 'sheep'; sp.textContent = '🐑';
+  meadow.appendChild(sp);
+  if(reduce){ setTimeout(()=>sp.remove(), 400); return; }
+  const W = meadow.clientWidth + 120, dur = 2200, t0 = performance.now();
+  (function run(t){
+    const k = (t - t0)/dur;
+    if(k >= 1){ sp.remove(); return; }
+    const x = -60 + k*W;
+    const mid = Math.abs(x - W/2 + 60), jump = Math.max(0, 90 - mid*mid/180);
+    sp.style.transform = `translate(${x}px, ${-jump}px) rotate(${jump > 1 ? -12 : 0}deg) scaleX(-1)`;
+    requestAnimationFrame(run);
+  })(t0);
+});
+
+/* ---------- copy CA ---------- */
+$('#copyBtn').addEventListener('click', e => {
+  navigator.clipboard.writeText($('#caText').textContent.trim()).then(()=>{
+    say('contract copied. verify it on solscan, then sweet dreams.');
+    zzz(e.clientX || innerWidth/2, e.clientY || innerHeight/2, 6);
+    e.target.textContent = 'COPIED ✓'; setTimeout(()=> e.target.textContent = 'COPY', 1600);
+    if(typeof gtag === 'function') gtag('event', 'copy_contract', {event_category: 'conversion'});
+  }).catch(()=> say('copy failed — select it gently by hand'));
+});
+
+/* track buy-button clicks */
+document.querySelectorAll('a').forEach(a => {
+  if(/pump\.fun|BUY ON PUMP/i.test(a.href + a.textContent)) a.addEventListener('click', () => {
+    if(typeof gtag === 'function') gtag('event', 'click_buy', {event_category: 'conversion'});
+  });
+});
+
+/* ---------- counters + reveals + cycle bar ---------- */
+function runCounter(el){
+  const target = parseInt(el.dataset.count, 10);
+  if(reduce || target === 0){ el.textContent = target.toLocaleString('en-US'); return; }
+  const t0 = performance.now(), dur = 1400;
+  (function tk(t){
+    const k = Math.min(1, (t - t0)/dur), e2 = 1 - Math.pow(1 - k, 3);
+    el.textContent = Math.round(target * e2).toLocaleString('en-US');
+    if(k < 1) requestAnimationFrame(tk);
+  })(t0);
+}
+const io = new IntersectionObserver(es => es.forEach(en => {
+  if(!en.isIntersecting) return;
+  en.target.classList.add('in');
+  en.target.querySelectorAll('[data-count]').forEach(runCounter);
+  en.target.querySelectorAll('.seg').forEach(s => s.style.width = s.style.getPropertyValue('--w'));
+  io.unobserve(en.target);
+}), {threshold:.15});
+$$('.reveal, .hero').forEach(el => io.observe(el));
+
+})();
+</script>
+</body>
+</html>
