@@ -211,10 +211,12 @@ h1 .rest{display:inline-block;background:linear-gradient(135deg,var(--lav),var(-
 
 /* ============ SHEEP GAME ============ */
 .meadow{position:relative;margin-top:28px;height:210px;min-height:210px;border-radius:24px;overflow:hidden;border:1px solid var(--line);
-  background:linear-gradient(180deg,transparent 55%,rgba(155,232,200,.16) 56%),var(--card)}
-.fence{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:2.6rem;user-select:none}
-.ground{position:absolute;left:0;right:0;bottom:18px;border-bottom:3px dashed var(--line)}
-.sheep{position:absolute;bottom:30px;font-size:2.6rem;left:0;user-select:none;will-change:transform}
+  background:linear-gradient(180deg, #2b2a5e 0%, #34306a 52%, #3f8f5e 52%, #4fa468 70%, #3c8a57 100%)}
+.meadow::after{content:"";position:absolute;left:0;right:0;bottom:0;height:48%;
+  background:repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 6px, transparent 6px 14px);pointer-events:none}
+.fence{position:absolute;left:50%;bottom:46px;transform:translateX(-50%);font-size:2.6rem;user-select:none;z-index:2}
+.ground{position:absolute;left:0;right:0;bottom:48%;border-top:3px dashed rgba(255,255,255,.35)}
+.sheep{position:absolute;bottom:46px;font-size:2.6rem;left:0;user-select:none;will-change:transform;z-index:3}
 .sheep-ui{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:22px}
 .scount{font-family:var(--mono);font-size:.85rem;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:11px 18px}
 .scount b{color:var(--moss);font-size:1rem}
@@ -525,7 +527,7 @@ footer{position:relative;z-index:1;padding:70px 0 50px;text-align:center}
     <a class="btn btn-soft btn-sm" href="#" rel="noopener">📊 DEXSCREENER</a>
     <a class="btn btn-soft btn-sm" href="#" rel="noopener">🔍 SOLSCAN</a>
   </div>
-  <p class="fine">$NAP is a meme token created for entertainment and community participation. it has no intrinsic value and promises no financial return. nothing on this page is financial advice. do your own research, never spend money you can't afford to lose, drink water, and go to bed. © 2026 the Well-Rested — aftermynap.fun — certified horizontal. <span style="opacity:.4">v6</span></p>
+  <p class="fine">$NAP is a meme token created for entertainment and community participation. it has no intrinsic value and promises no financial return. nothing on this page is financial advice. do your own research, never spend money you can't afford to lose, drink water, and go to bed. © 2026 the Well-Rested — aftermynap.fun — certified horizontal. <span style="opacity:.4">v7</span></p>
 </footer>
 
 <button id="wishBtn" aria-label="Make a wish on a shooting star" title="make a wish">🌠</button>
