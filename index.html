@@ -73,8 +73,8 @@ nav a.getcozy{display:none}
   background:var(--card2);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   box-shadow:var(--shadow);display:none;opacity:0;transition:opacity .25s ease,transform .25s ease}
 .mobile-menu.open{display:flex;opacity:1;transform:translateX(-50%) translateY(0)}
-.mobile-menu a{font-size:1rem;font-weight:700;color:var(--sub);padding:13px 16px;border-radius:14px;text-align:center}
-.mobile-menu a:hover{color:var(--ink);background:var(--card)}
+.mobile-menu a{font-size:1.02rem;font-weight:700;color:var(--ink);padding:14px 16px;border-radius:14px;text-align:center}
+.mobile-menu a:hover,.mobile-menu a:active{color:var(--ink);background:var(--card)}
 .mobile-menu .btn{margin-top:6px;justify-content:center}
 @media(min-width:880px){.mobile-menu{display:none!important}}
 .toggle{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);
@@ -209,11 +209,11 @@ h1 .rest{display:inline-block;background:linear-gradient(135deg,var(--lav),var(-
 .timer-copy b{color:var(--ink)}
 
 /* ============ SHEEP GAME ============ */
-.meadow{position:relative;margin-top:28px;height:210px;border-radius:24px;overflow:hidden;border:1px solid var(--line);
+.meadow{position:relative;margin-top:28px;height:210px;min-height:210px;border-radius:24px;overflow:hidden;border:1px solid var(--line);
   background:linear-gradient(180deg,transparent 55%,rgba(155,232,200,.16) 56%),var(--card)}
 .fence{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);font-size:2.6rem;user-select:none}
 .ground{position:absolute;left:0;right:0;bottom:18px;border-bottom:3px dashed var(--line)}
-.sheep{position:absolute;bottom:30px;font-size:2.1rem;left:-60px;user-select:none;will-change:transform}
+.sheep{position:absolute;bottom:30px;font-size:2.6rem;left:0;user-select:none;will-change:transform}
 .sheep-ui{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:22px}
 .scount{font-family:var(--mono);font-size:.85rem;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:11px 18px}
 .scount b{color:var(--moss);font-size:1rem}
@@ -263,8 +263,9 @@ footer{position:relative;z-index:1;padding:70px 0 50px;text-align:center}
   background:var(--card2);border:1px solid var(--line);backdrop-filter:blur(14px);box-shadow:var(--shadow);transition:transform .3s}
 #wishBtn:hover{transform:scale(1.12) rotate(-12deg)}
 
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
-.reveal.in{opacity:1;transform:translateY(0)}
+.reveal{opacity:1;transform:none}
+.reveal.anim{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.reveal.anim.in{opacity:1;transform:translateY(0)}
 
 @media (prefers-reduced-motion: reduce){
   *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
@@ -686,17 +687,19 @@ $('#sheepBtn').addEventListener('click', ()=>{
   if(MILES[sheep]) say(MILES[sheep]);
   const sp = document.createElement('span'); sp.className = 'sheep'; sp.textContent = '🐑';
   meadow.appendChild(sp);
-  if(reduce){ setTimeout(()=>sp.remove(), 400); return; }
-  const W = meadow.clientWidth + 120, dur = 2200, t0 = performance.now();
+  if(reduce){ sp.style.transform='translate(50%,0) scaleX(-1)'; setTimeout(()=>sp.remove(), 600); return; }
+  const W = meadow.clientWidth, dur = 2600, t0 = performance.now();
   (function run(t){
-    const k = (t - t0)/dur;
+    const k = Math.min(1,(t - t0)/dur);
+    const x = 10 + k*(W - 60);                 // start just inside left edge, end near right edge
+    const mid = Math.abs(x - W/2);
+    const jump = Math.max(0, 70 - mid*mid/(W*0.9)); // hop over the fence in the middle
+    sp.style.transform = `translate(${x}px, ${-jump}px) rotate(${jump > 2 ? -12 : 0}deg) scaleX(-1)`;
     if(k >= 1){ sp.remove(); return; }
-    const x = -60 + k*W;
-    const mid = Math.abs(x - W/2 + 60), jump = Math.max(0, 90 - mid*mid/180);
-    sp.style.transform = `translate(${x}px, ${-jump}px) rotate(${jump > 1 ? -12 : 0}deg) scaleX(-1)`;
     requestAnimationFrame(run);
   })(t0);
 });
+
 
 /* ---------- copy CA ---------- */
 $('#copyBtn').addEventListener('click', e => {
@@ -726,23 +729,33 @@ function runCounter(el){
     if(k < 1) requestAnimationFrame(tk);
   })(t0);
 }
+const revealEl = el =>{
+  if(el.classList.contains('in')) return;
+  el.classList.add('in');
+  el.querySelectorAll('[data-count]').forEach(runCounter);
+  el.querySelectorAll('.seg').forEach(s => s.style.width = s.style.getPropertyValue('--w'));
+};
+/* opt sections into the slide-in animation (only now that JS is confirmed running) */
+$$('.reveal').forEach(el => el.classList.add('anim'));
 const io = new IntersectionObserver(es => es.forEach(en => {
   if(!en.isIntersecting) return;
-  en.target.classList.add('in');
-  en.target.querySelectorAll('[data-count]').forEach(runCounter);
-  en.target.querySelectorAll('.seg').forEach(s => s.style.width = s.style.getPropertyValue('--w'));
+  revealEl(en.target);
   io.unobserve(en.target);
-}), {threshold:.01, rootMargin:'0px 0px -10% 0px'});
+}), {threshold:0, rootMargin:'0px 0px -5% 0px'});
 $$('.reveal, .hero').forEach(el => io.observe(el));
-/* safety net: if anything is still hidden after load (mobile quirk), reveal it */
-addEventListener('load', ()=> setTimeout(()=>{
+
+/* fallback 1: reveal on scroll/resize for any browser where the observer misbehaves */
+const scrollReveal = ()=>{
   $$('.reveal:not(.in)').forEach(el=>{
-    const r = el.getBoundingClientRect();
-    if(r.top < innerHeight){ el.classList.add('in');
-      el.querySelectorAll('[data-count]').forEach(runCounter);
-      el.querySelectorAll('.seg').forEach(s=> s.style.width = s.style.getPropertyValue('--w')); }
+    if(el.getBoundingClientRect().top < innerHeight - 40) revealEl(el);
   });
-}, 400));
+};
+addEventListener('scroll', scrollReveal, {passive:true});
+addEventListener('resize', scrollReveal);
+addEventListener('load', ()=>{ scrollReveal(); setTimeout(scrollReveal, 300); });
+
+/* fallback 2: hard safety — after 2.5s reveal everything no matter what */
+setTimeout(()=> $$('.reveal:not(.in)').forEach(revealEl), 2500);
 
 })();
 </script>
