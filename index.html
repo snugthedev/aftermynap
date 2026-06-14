@@ -120,6 +120,18 @@ h1 .rest{display:inline-block;background:linear-gradient(135deg,var(--lav),var(-
   -webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-sub{color:var(--sub);max-width:560px;margin:10px auto 0;font-size:1.04rem}
 .hero-sub b{color:var(--ink)}
+.countdown{margin:30px auto 0;max-width:560px;padding:22px 20px;border-radius:24px;
+  background:var(--card2);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:var(--shadow)}
+.cd-label{font-family:var(--display);font-weight:700;font-size:.95rem;letter-spacing:.5px;color:var(--lav);text-transform:lowercase;margin-bottom:14px}
+.cd-clock{display:flex;align-items:center;justify-content:center;gap:8px}
+.cd-unit{display:flex;flex-direction:column;align-items:center;min-width:62px}
+.cd-unit b{font-family:var(--display);font-size:2.5rem;font-weight:700;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.cd-unit span{font-size:.72rem;letter-spacing:1px;text-transform:uppercase;color:var(--sub);margin-top:6px}
+.cd-sep{font-family:var(--display);font-size:2rem;font-weight:700;color:var(--lav);opacity:.5;transform:translateY(-9px)}
+.cd-when{margin-top:16px;font-size:.85rem;color:var(--sub)}
+.countdown.live{background:linear-gradient(135deg,var(--peach),var(--pink))}
+.countdown.live .cd-label,.countdown.live .cd-when{color:#4A2C44}
+@media(max-width:560px){.cd-unit{min-width:48px}.cd-unit b{font-size:1.9rem}.cd-sep{font-size:1.5rem}}
 .hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:30px}
 .pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:30px}
 .pill{font-family:var(--mono);font-size:.68rem;background:var(--card);border:1px solid var(--line);
@@ -335,6 +347,19 @@ footer{position:relative;z-index:1;padding:70px 0 50px;text-align:center}
   <p class="boop-hint">( boop the cloud · <span id="boops">0</span> boops so far )</p>
   <h1>THE FIRST<br><span class="rest">PROOF-OF-REST</span> TOKEN</h1>
   <p class="hero-sub"><b>1,000,000,000 tokens. zero urgency.</b> one $NAP for every sheep the world counts tonight. $NAP is for everyone the grind forgot to thank. spiritually softer than bitcoin.</p>
+  <div class="countdown" id="countdown" aria-label="Time until launch">
+    <div class="cd-label">😴 fair launch in</div>
+    <div class="cd-clock">
+      <div class="cd-unit"><b id="cd-d">00</b><span>days</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><b id="cd-h">00</b><span>hours</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><b id="cd-m">00</b><span>mins</span></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-unit"><b id="cd-s">00</b><span>secs</span></div>
+    </div>
+    <div class="cd-when">monday · 4pm CET / 10am EST · on pump.fun</div>
+  </div>
   <div class="hero-ctas">
     <a class="btn btn-cozy" href="#contract">GET COZY → BUY $NAP</a>
     <a class="btn btn-soft" href="#community">JOIN THE WELL-RESTED</a>
@@ -527,7 +552,7 @@ footer{position:relative;z-index:1;padding:70px 0 50px;text-align:center}
     <a class="btn btn-soft btn-sm" href="#" rel="noopener">📊 DEXSCREENER</a>
     <a class="btn btn-soft btn-sm" href="#" rel="noopener">🔍 SOLSCAN</a>
   </div>
-  <p class="fine">$NAP is a meme token created for entertainment and community participation. it has no intrinsic value and promises no financial return. nothing on this page is financial advice. do your own research, never spend money you can't afford to lose, drink water, and go to bed. © 2026 the Well-Rested — aftermynap.fun — certified horizontal. <span style="opacity:.4">v7</span></p>
+  <p class="fine">$NAP is a meme token created for entertainment and community participation. it has no intrinsic value and promises no financial return. nothing on this page is financial advice. do your own research, never spend money you can't afford to lose, drink water, and go to bed. © 2026 the Well-Rested — aftermynap.fun — certified horizontal. <span style="opacity:.4">v8</span></p>
 </footer>
 
 <button id="wishBtn" aria-label="Make a wish on a shooting star" title="make a wish">🌠</button>
@@ -663,6 +688,36 @@ startBtn.addEventListener('click', ()=>{
 });
 $('#treset').addEventListener('click', ()=>{ stop(); left = napSecs; render(); lab.textContent = 'PICK A NAP · PRESS START'; });
 render();
+
+/* ---------- launch countdown ---------- */
+(function(){
+  const cd = document.getElementById('countdown');
+  if(!cd) return;
+  // Monday 16:00 CET. CET in June = CEST = UTC+2, so 14:00 UTC.
+  // Set the date to the next launch Monday:
+  const target = new Date('2026-06-15T14:00:00Z').getTime();
+  const dd=document.getElementById('cd-d'), hh=document.getElementById('cd-h'),
+        mm=document.getElementById('cd-m'), ss=document.getElementById('cd-s');
+  const pad = n => String(n).padStart(2,'0');
+  function tick(){
+    const diff = target - Date.now();
+    if(diff <= 0){
+      cd.classList.add('live');
+      cd.querySelector('.cd-label').textContent = '🎉 we are live';
+      cd.querySelector('.cd-clock').innerHTML = '<a class="btn btn-soft" href="#contract" style="margin:4px auto">GET COZY → BUY $NAP</a>';
+      cd.querySelector('.cd-when').textContent = 'live now on pump.fun · verify the CA below';
+      clearInterval(timer);
+      return;
+    }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor(diff%86400000/3600000);
+    const m = Math.floor(diff%3600000/60000);
+    const s = Math.floor(diff%60000/1000);
+    dd.textContent=pad(d); hh.textContent=pad(h); mm.textContent=pad(m); ss.textContent=pad(s);
+  }
+  tick();
+  const timer = setInterval(tick, 1000);
+})();
 
 /* ---------- mobile menu ---------- */
 const menuBtn = $('#menuBtn'), mobileMenu = $('#mobileMenu');
