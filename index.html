@@ -690,6 +690,7 @@ $('#treset').addEventListener('click', ()=>{ stop(); left = napSecs; render(); l
 render();
 
 /* ---------- launch countdown ---------- */
+try{
 (function(){
   const cd = document.getElementById('countdown');
   if(!cd) return;
@@ -699,6 +700,7 @@ render();
   const dd=document.getElementById('cd-d'), hh=document.getElementById('cd-h'),
         mm=document.getElementById('cd-m'), ss=document.getElementById('cd-s');
   const pad = n => String(n).padStart(2,'0');
+  let timer = null;
   function tick(){
     const diff = target - Date.now();
     if(diff <= 0){
@@ -706,7 +708,7 @@ render();
       cd.querySelector('.cd-label').textContent = '🎉 we are live';
       cd.querySelector('.cd-clock').innerHTML = '<a class="btn btn-soft" href="#contract" style="margin:4px auto">GET COZY → BUY $NAP</a>';
       cd.querySelector('.cd-when').textContent = 'live now on pump.fun · verify the CA below';
-      clearInterval(timer);
+      if(timer) clearInterval(timer);
       return;
     }
     const d = Math.floor(diff/86400000);
@@ -716,8 +718,9 @@ render();
     dd.textContent=pad(d); hh.textContent=pad(h); mm.textContent=pad(m); ss.textContent=pad(s);
   }
   tick();
-  const timer = setInterval(tick, 1000);
+  timer = setInterval(tick, 1000);
 })();
+}catch(err){ console.error('countdown failed (non-fatal):', err); }
 
 /* ---------- mobile menu ---------- */
 const menuBtn = $('#menuBtn'), mobileMenu = $('#mobileMenu');
